@@ -1,0 +1,396 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
+    <title>WC</title>
+    <link href="stylesheets/framework.css" rel="stylesheet">
+    <link href="stylesheets/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/iThing.css" type="text/css" />
+    <style>
+    </style>
+  </head>
+  <body id="cloud-container">
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Logo Placeholder</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" class="active">Dashboard</a></li>
+<!--             <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li> -->
+            <li><a href="#">Help</a></li>
+          </ul>
+          <!-- <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form> -->
+        </div>
+      </div>
+    </nav>
+    
+    
+    
+    <div class="container">
+      <div class="row">
+        <div id="vis"></div>
+        <form id="form">
+          <!-- <p style="position: absolute; right: 0; top: 0" id="status"></p> -->
+          <div style="text-align: center">
+            <div id="presets"></div>
+            <div id="custom-area">
+              <!-- <p><label for="text">Enter a URL below, or paste some text.</label> -->
+              <p><textarea id="text" class="hidden"></textarea>
+                <div id="dateSlider"></div>
+                <button id="go" type="submit" type="button" class="btn btn-sm btn-success" >Refresh</button>
+            </div>
+          </div>
+        
+          <div id="angles" class="hidden">
+            <p><input type="number" id="angle-count" value="5" min="1"> <label for="angle-count">orientations</label>
+              <label for="angle-from">from</label> <input type="number" id="angle-from" value="0" min="-90" max="90"> °
+              <label for="angle-to">to</label> <input type="number" id="angle-to" value="0" min="-90" max="90"> °
+          </div>
+          <hr style="clear: both">
+        </form>
+      </div>
+    </div>
+
+
+
+
+
+
+    <script src="javascripts/d3.min.js"></script>
+    <script src="javascripts/unicode.js"></script>
+    <script src="javascripts/d3.layout.cloud.js"></script>
+    
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+    <script src="javascripts/jQDateRangeSlider-min.js"></script>
+    
+    <script type="text/javascript">
+      $(document).ready(function () {
+        "use strict";
+          
+
+        var greenTea = function  (argument) {
+          
+          var string ="";
+        
+          $.ajax({
+
+            type: 'GET',
+            contentType: 'application/json',
+            url: '/score',           
+            success: function(data) {
+              
+              //console.log(JSON.parse(data.score));
+      
+              var array = JSON.parse(data.score);
+              console.log(array);
+              var text = [];
+              var people = [];
+              var peopleObj = [];
+              var minDate;
+              var dates = [];
+              array.forEach(function function_name (element, index, array) {
+                if(people.indexOf(element.name)<0){ 
+                  people.push(element.name);
+                  peopleObj.push({"name":element.name,"text":element.rank});               
+                }else{
+                  peopleObj[people.indexOf(element.name)].text = text.concat(element.rank);
+                }
+                dates.push(new Date(element.date));
+                text = text.concat(element.rank);
+              });
+              dates = dates.sort(function(a,b){
+                // Turn your strings into dates, and then subtract them
+                // to get a value that is either negative, positive, or zero.
+                return new Date(b.date) - new Date(a.date);
+              });
+
+              minDate = dates[0];
+              var index = 0;
+              var rowCount=0;
+              peopleObj.forEach(function (element){
+                if(index==0||index%2==0){
+                  $('#cloud-container').append(
+                    '<div id="row'+rowCount+'" class="row"></div>'
+                  );
+                }
+                
+              
+              
+                     $('#row'+rowCount).append( 
+                     '<div class="container">'+
+                        element.name+
+                        //'<div class="row">'+
+                         ' <div id="vis'+index+'"></div>'+
+                          '<form id="form'+index+'">'+
+                            '<div style="text-align: center">'+
+                             ' <div id="presets"></div>'+
+                              '<div id="custom-area">'+
+                                '<textarea id="text'+index+'" class="hidden"></textarea>'+
+                                '<div id="dateSlider'+index+'"></div>'+
+                                ' <button id="go'+index+'" type="submit" type="button" class="btn btn-sm btn-success" >Refresh</button>'+
+                              '</div>'+
+                            '</div>'+
+                            '<hr style="clear: both">'+
+                          '</form>'+
+                          
+                      '</div>');
+                    if(index%2!=0){
+                      rowCount++;
+                    }
+              $("#dateSlider"+index).dateRangeSlider({
+                bounds:{
+                  min: minDate,
+                  max: new Date()
+               },
+               defaultValues:{
+                  min: minDate,
+                  max: new Date()
+               }
+               });
+              $("#dateSlider"+index).bind("valuesChanging", function(e, data){
+                var cloudNumber = this.id.substring(10,this.length);
+                updateCloud(cloudNumber,data.values.min,data.values.max);
+              });
+              
+              $('#text'+index).val(string);
+              genCloud(string, {
+
+                width: 960,
+                height: 600,
+                svgID: "#vis"+index,
+                formID: "#form"+index,
+                textID:"#text"+index,
+
+              });
+              $('#go'+index).trigger('click');
+              updateCloud(index,minDate,new Date());      
+                    
+                  index++;
+              });
+              
+              
+              
+            /*  text.forEach(function (element){
+      
+                if(element === 'FUNDING ISSUE'){
+                  element = 'FUNDING-ISSUE';
+                }
+                
+                if(element === 'BUDGET ISSUE'){
+                  element = 'BUDGET ISSUE';
+                }
+      
+                if(element === 'BUDGET CUT'){
+      
+                  element = "BUDGET-CUT";
+                }
+      
+                if(element === 'LIMITED FUNDING'){
+      
+                  element = "LIMITED-FUNDING";
+                }
+      
+                if(element === 'RAMP UP'){
+      
+                  element = "RAMP-UP";
+                }
+      
+                if(element === 'FUNDING CONSTRAIN'){
+      
+                  element = "FUNDING-CONSTRAIN";
+                }
+      
+                if(element === 'FUNDING CHALLENGE'){
+      
+                  element = "FUNDING-CHALLENGE";
+                }
+      
+                string = string + " " + element;
+              });*/
+              
+              //console.log(string);
+              $("#dateSlider").dateRangeSlider({
+                bounds:{
+                  min: minDate,
+                  max: new Date()
+               },
+               defaultValues:{
+                  min: minDate,
+                  max: new Date()
+               }
+               });
+              $("#dateSlider").bind("valuesChanging", function(e, data){
+                updateBigCloud(data.values.min,data.values.max);
+              });
+              
+              $('#text').val(string);
+              genCloud(string, {
+
+                width: 960,
+                height: 600,
+                svgID: "#vis",
+                formID: "#form",
+                textID:"#text",
+
+              });
+              $('#go').trigger('click');
+              updateBigCloud(minDate,new Date());
+              
+              function updateBigCloud(startDate, endDate){
+                var mainText = [];
+                array.forEach(function (element) {
+                  var elementDate =  new Date(element.date);
+                  if(elementDate>startDate&&elementDate<endDate){
+                    mainText = mainText.concat(element.rank);
+                  }
+                });
+                string = "";
+                mainText.forEach(function (element2){
+        
+                  if(element2 === 'FUNDING ISSUE'){
+                    element2 = 'FUNDING-ISSUE';
+                  }
+                  
+                  if(element2 === 'BUDGET ISSUE'){
+                    element2 = 'BUDGET ISSUE';
+                  }
+        
+                  if(element2 === 'BUDGET CUT'){
+        
+                    element2 = "BUDGET-CUT";
+                  }
+        
+                  if(element2 === 'LIMITED FUNDING'){
+        
+                    element2 = "LIMITED-FUNDING";
+                  }
+        
+                  if(element2 === 'RAMP UP'){
+        
+                    element2 = "RAMP-UP";
+                  }
+        
+                  if(element2 === 'FUNDING CONSTRAIN'){
+        
+                    element2 = "FUNDING-CONSTRAIN";
+                  }
+        
+                  if(element2 === 'FUNDING CHALLENGE'){
+        
+                    element2 = "FUNDING-CHALLENGE";
+                  }
+        
+                  string = string + " " + element2;
+                });
+                $('#text').val(string);
+                $('#go').trigger('click');
+                
+              }
+              
+              
+              function updateCloud(cloudNumber, startDate, endDate){
+              
+                var textElements = [];
+                array.forEach(function function_name (element) {
+                  //console.log("Date: "+element.date+" Start Date:"+startDate+" End Date: "+endDate);
+                  var elementDate =  new Date(element.date);
+                  if(element.name == people[cloudNumber]&&elementDate>startDate&&elementDate<endDate){
+                    textElements = textElements.concat(element.rank);
+                  }
+                 string = "";
+                textElements.forEach(function (element2){
+      
+                if(element2 === 'FUNDING ISSUE'){
+                  element2 = 'FUNDING-ISSUE';
+                }
+                
+                if(element2 === 'BUDGET ISSUE'){
+                  element2 = 'BUDGET ISSUE';
+                }
+      
+                if(element2 === 'BUDGET CUT'){
+      
+                  element2 = "BUDGET-CUT";
+                }
+      
+                if(element2 === 'LIMITED FUNDING'){
+      
+                  element2 = "LIMITED-FUNDING";
+                }
+      
+                if(element2 === 'RAMP UP'){
+      
+                  element2 = "RAMP-UP";
+                }
+      
+                if(element2 === 'FUNDING CONSTRAIN'){
+      
+                  element2 = "FUNDING-CONSTRAIN";
+                }
+      
+                if(element2 === 'FUNDING CHALLENGE'){
+      
+                  element2 = "FUNDING-CHALLENGE";
+                }
+      
+                string = string + " " + element2;
+              });
+
+                  
+                });
+
+                $('#text'+cloudNumber).val(string);
+                $('#go'+cloudNumber).trigger('click');
+              }
+
+
+
+
+
+              return string;
+              
+      
+              
+            },
+
+
+            error: function (error) {
+              alert('error');
+            }
+            
+          }); 
+  
+          
+  
+        };
+
+
+        greenTea();
+
+
+
+        
+      
+      });
+      
+      
+    </script>
+    <script src="javascripts/cloud.js"></script>
+  </body>
+</html>

@@ -1,0 +1,108 @@
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
+
+    <title>WC</title>
+
+
+    <link href="stylesheets/framework.css" rel="stylesheet">
+    <link href="stylesheets/style.css" rel="stylesheet">
+
+    <style>
+    
+    </style>
+
+
+  </head>
+
+  <body>
+
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#">Logo Placeholder</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">Dashboard</a></li>
+            <li><a href="#">Settings</a></li>
+            <li><a href="#">Profile</a></li>
+            <li><a href="#">Help</a></li>
+          </ul>
+          <form class="navbar-form navbar-right">
+            <input type="text" class="form-control" placeholder="Search...">
+          </form>
+        </div>
+      </div>
+    </nav>
+
+ <div class="container-fluid">
+      <div class="row">
+
+<div id="vis"></div>
+
+<form id="form">
+
+<!-- <p style="position: absolute; right: 0; top: 0" id="status"></p> -->
+
+<div style="text-align: center">
+  <div id="presets"></div>
+  <div id="custom-area">
+    <!-- <p><label for="text">Enter a URL below, or paste some text.</label> -->
+    <p><textarea id="text" class="hidden"></textarea>
+    <button id="go" type="submit" type="button" class="btn btn-success" >Refresh</button>
+  </div>
+</div>
+
+<hr>
+
+
+
+<div class="row">
+  <div class="col-md-6"><div class="input-group ">
+      <div class="input-group-addon">Font</div>
+      <input type="text" id="font" value="Impact" class="form-control">
+      
+    </div></div>
+    <div class="col-md-4"></div>
+  <div class="col-md-2" ><label>Download:</label>
+    <a id="download-svg" href="#" target="_blank">SVG</a> |
+    <a id="download-png" href="#" target="_blank">PNG</a></div>
+</div>
+
+
+
+<div id="angles" class="hidden">
+  <p><input type="number" id="angle-count" value="5" min="1"> <label for="angle-count">orientations</label>
+    <label for="angle-from">from</label> <input type="number" id="angle-from" value="-90" min="-90" max="90"> °
+    <label for="angle-to">to</label> <input type="number" id="angle-to" value="90" min="-90" max="90"> °
+</div>
+
+<hr style="clear: both">
+
+
+
+</form>
+</div>
+</div>
+
+<script src="javascripts/d3.min.js"></script>
+<script src="javascripts/unicode.js"></script>
+<script src="javascripts/d3.layout.cloud.js"></script>
+<script src="javascripts/cloud.js"></script>
+
+
+</body>
+</html>
+
+
