@@ -10,6 +10,8 @@
     <link href="stylesheets/framework.css" rel="stylesheet">
     <link href="stylesheets/style.css" rel="stylesheet">
     <link rel="stylesheet" href="css/iThing.css" type="text/css" />
+    <link rel="stylesheet" href="css/svg.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
     <style>
     </style>
   </head>
@@ -23,14 +25,14 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">Logo Placeholder</a>
+          <a class="navbar-brand" href="#">Logo</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#" class="active">Dashboard</a></li>
 <!--             <li><a href="#">Settings</a></li>
             <li><a href="#">Profile</a></li> -->
-            <li><a href="#">Help</a></li>
+            <li><a href="#" id= "keywords" >Keywords</a></li>
           </ul>
           <!-- <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
@@ -39,9 +41,16 @@
       </div>
     </nav>
     
+    <div class="middle">
+      <div class="row">
+        <div id="energychart"></div>
+          <hr style="clear: both">
+      </div>
+    </div>
+
+
     
-    
-    <div class="container">
+    <div class="middle">
       <div class="row">
         <div id="vis"></div>
         <form id="form">
@@ -52,7 +61,8 @@
               <!-- <p><label for="text">Enter a URL below, or paste some text.</label> -->
               <p><textarea id="text" class="hidden"></textarea>
                 <div id="dateSlider"></div>
-                <button id="go" type="submit" type="button" class="btn btn-sm btn-success" >Refresh</button>
+                <div><br/></div>
+                <button id="go" type="submit" type="button" class="btn btn-sm btn-success" >Rearrange</button>
             </div>
           </div>
         
@@ -67,7 +77,21 @@
     </div>
 
 
+  <div class="modal fade keywordModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          
+      </div>
+    </div>
+  </div>
 
+  <div class="modal fade spinnerModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-sm" style="width:55px; hight:55px; ">
+      
+          <div style="color:white"><i class="fa fa-spinner fa-4x fa-spin"></i></div>
+     
+    </div>
+  </div>
 
 
 
@@ -75,322 +99,17 @@
     <script src="javascripts/unicode.js"></script>
     <script src="javascripts/d3.layout.cloud.js"></script>
     
+    
     <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="javascripts/framework.js"></script>
     <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
     <script src="javascripts/jQDateRangeSlider-min.js"></script>
     
-    <script type="text/javascript">
-      $(document).ready(function () {
-        "use strict";
-          
-
-        var greenTea = function  (argument) {
-          
-          var string ="";
-        
-          $.ajax({
-
-            type: 'GET',
-            contentType: 'application/json',
-            url: '/score',           
-            success: function(data) {
-              
-              //console.log(JSON.parse(data.score));
-      
-              var array = JSON.parse(data.score);
-              console.log(array);
-              var text = [];
-              var people = [];
-              var peopleObj = [];
-              var minDate;
-              var dates = [];
-              array.forEach(function function_name (element, index, array) {
-                if(people.indexOf(element.name)<0){ 
-                  people.push(element.name);
-                  peopleObj.push({"name":element.name,"text":element.rank});               
-                }else{
-                  peopleObj[people.indexOf(element.name)].text = text.concat(element.rank);
-                }
-                dates.push(new Date(element.date));
-                text = text.concat(element.rank);
-              });
-              dates = dates.sort(function(a,b){
-                // Turn your strings into dates, and then subtract them
-                // to get a value that is either negative, positive, or zero.
-                return new Date(b.date) - new Date(a.date);
-              });
-
-              minDate = dates[0];
-              var index = 0;
-              var rowCount=0;
-              peopleObj.forEach(function (element){
-                if(index==0||index%2==0){
-                  $('#cloud-container').append(
-                    '<div id="row'+rowCount+'" class="row"></div>'
-                  );
-                }
-                
-              
-              
-                     $('#row'+rowCount).append( 
-                     '<div class="container">'+
-                        element.name+
-                        //'<div class="row">'+
-                         ' <div id="vis'+index+'"></div>'+
-                          '<form id="form'+index+'">'+
-                            '<div style="text-align: center">'+
-                             ' <div id="presets"></div>'+
-                              '<div id="custom-area">'+
-                                '<textarea id="text'+index+'" class="hidden"></textarea>'+
-                                '<div id="dateSlider'+index+'"></div>'+
-                                ' <button id="go'+index+'" type="submit" type="button" class="btn btn-sm btn-success" >Refresh</button>'+
-                              '</div>'+
-                            '</div>'+
-                            '<hr style="clear: both">'+
-                          '</form>'+
-                          
-                      '</div>');
-                    if(index%2!=0){
-                      rowCount++;
-                    }
-              $("#dateSlider"+index).dateRangeSlider({
-                bounds:{
-                  min: minDate,
-                  max: new Date()
-               },
-               defaultValues:{
-                  min: minDate,
-                  max: new Date()
-               }
-               });
-              $("#dateSlider"+index).bind("valuesChanging", function(e, data){
-                var cloudNumber = this.id.substring(10,this.length);
-                updateCloud(cloudNumber,data.values.min,data.values.max);
-              });
-              
-              $('#text'+index).val(string);
-              genCloud(string, {
-
-                width: 960,
-                height: 600,
-                svgID: "#vis"+index,
-                formID: "#form"+index,
-                textID:"#text"+index,
-
-              });
-              $('#go'+index).trigger('click');
-              updateCloud(index,minDate,new Date());      
-                    
-                  index++;
-              });
-              
-              
-              
-            /*  text.forEach(function (element){
-      
-                if(element === 'FUNDING ISSUE'){
-                  element = 'FUNDING-ISSUE';
-                }
-                
-                if(element === 'BUDGET ISSUE'){
-                  element = 'BUDGET ISSUE';
-                }
-      
-                if(element === 'BUDGET CUT'){
-      
-                  element = "BUDGET-CUT";
-                }
-      
-                if(element === 'LIMITED FUNDING'){
-      
-                  element = "LIMITED-FUNDING";
-                }
-      
-                if(element === 'RAMP UP'){
-      
-                  element = "RAMP-UP";
-                }
-      
-                if(element === 'FUNDING CONSTRAIN'){
-      
-                  element = "FUNDING-CONSTRAIN";
-                }
-      
-                if(element === 'FUNDING CHALLENGE'){
-      
-                  element = "FUNDING-CHALLENGE";
-                }
-      
-                string = string + " " + element;
-              });*/
-              
-              //console.log(string);
-              $("#dateSlider").dateRangeSlider({
-                bounds:{
-                  min: minDate,
-                  max: new Date()
-               },
-               defaultValues:{
-                  min: minDate,
-                  max: new Date()
-               }
-               });
-              $("#dateSlider").bind("valuesChanging", function(e, data){
-                updateBigCloud(data.values.min,data.values.max);
-              });
-              
-              $('#text').val(string);
-              genCloud(string, {
-
-                width: 960,
-                height: 600,
-                svgID: "#vis",
-                formID: "#form",
-                textID:"#text",
-
-              });
-              $('#go').trigger('click');
-              updateBigCloud(minDate,new Date());
-              
-              function updateBigCloud(startDate, endDate){
-                var mainText = [];
-                array.forEach(function (element) {
-                  var elementDate =  new Date(element.date);
-                  if(elementDate>startDate&&elementDate<endDate){
-                    mainText = mainText.concat(element.rank);
-                  }
-                });
-                string = "";
-                mainText.forEach(function (element2){
-        
-                  if(element2 === 'FUNDING ISSUE'){
-                    element2 = 'FUNDING-ISSUE';
-                  }
-                  
-                  if(element2 === 'BUDGET ISSUE'){
-                    element2 = 'BUDGET ISSUE';
-                  }
-        
-                  if(element2 === 'BUDGET CUT'){
-        
-                    element2 = "BUDGET-CUT";
-                  }
-        
-                  if(element2 === 'LIMITED FUNDING'){
-        
-                    element2 = "LIMITED-FUNDING";
-                  }
-        
-                  if(element2 === 'RAMP UP'){
-        
-                    element2 = "RAMP-UP";
-                  }
-        
-                  if(element2 === 'FUNDING CONSTRAIN'){
-        
-                    element2 = "FUNDING-CONSTRAIN";
-                  }
-        
-                  if(element2 === 'FUNDING CHALLENGE'){
-        
-                    element2 = "FUNDING-CHALLENGE";
-                  }
-        
-                  string = string + " " + element2;
-                });
-                $('#text').val(string);
-                $('#go').trigger('click');
-                
-              }
-              
-              
-              function updateCloud(cloudNumber, startDate, endDate){
-              
-                var textElements = [];
-                array.forEach(function function_name (element) {
-                  //console.log("Date: "+element.date+" Start Date:"+startDate+" End Date: "+endDate);
-                  var elementDate =  new Date(element.date);
-                  if(element.name == people[cloudNumber]&&elementDate>startDate&&elementDate<endDate){
-                    textElements = textElements.concat(element.rank);
-                  }
-                 string = "";
-                textElements.forEach(function (element2){
-      
-                if(element2 === 'FUNDING ISSUE'){
-                  element2 = 'FUNDING-ISSUE';
-                }
-                
-                if(element2 === 'BUDGET ISSUE'){
-                  element2 = 'BUDGET ISSUE';
-                }
-      
-                if(element2 === 'BUDGET CUT'){
-      
-                  element2 = "BUDGET-CUT";
-                }
-      
-                if(element2 === 'LIMITED FUNDING'){
-      
-                  element2 = "LIMITED-FUNDING";
-                }
-      
-                if(element2 === 'RAMP UP'){
-      
-                  element2 = "RAMP-UP";
-                }
-      
-                if(element2 === 'FUNDING CONSTRAIN'){
-      
-                  element2 = "FUNDING-CONSTRAIN";
-                }
-      
-                if(element2 === 'FUNDING CHALLENGE'){
-      
-                  element2 = "FUNDING-CHALLENGE";
-                }
-      
-                string = string + " " + element2;
-              });
-
-                  
-                });
-
-                $('#text'+cloudNumber).val(string);
-                $('#go'+cloudNumber).trigger('click');
-              }
-
-
-
-
-
-              return string;
-              
-      
-              
-            },
-
-
-            error: function (error) {
-              alert('error');
-            }
-            
-          }); 
-  
-          
-  
-        };
-
-
-        greenTea();
-
-
-
-        
-      
-      });
-      
-      
-    </script>
+    
     <script src="javascripts/cloud.js"></script>
+    <script src="javascripts/circularHeatChart.js"></script>
+    <script src="javascripts/example.js"></script>
+
+    <script src="javascripts/index.js" ></script>
   </body>
 </html>

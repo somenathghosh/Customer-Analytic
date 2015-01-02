@@ -110,7 +110,7 @@ function generate() {
 
 function draw(data, bounds) {
     /*statusText.style("display", "none");*/
-    console.log('500');
+    //console.log('500');
     scale = bounds ? Math.min(
         w / Math.abs(bounds[1].x - w / 2),
         w / Math.abs(bounds[0].x - w / 2),
@@ -279,7 +279,7 @@ function load(fetcher) {
     }
 
     function update() {
-        console.log('600');
+        //console.log('600');
         scale.domain([0, count - 1]).range([from, to]);
         var step = (to - from) / count;
 

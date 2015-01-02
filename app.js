@@ -170,6 +170,26 @@ app.get('/score', function (req, res) {
 });
 
 
+app.get('/persons', function(req, res){
+    
+    box.connect(function(conn, cb) {
+        
+            conn.query(queryPersons, function function_name (err, result) {
+                
+                console.log(result);
+
+                res.send(result);
+                
+            });
+          
+      
+        }, function function_name () {
+            console.log('successful');
+    });
+
+
+});
+
 app.use('/users', users);
 
 
@@ -181,12 +201,12 @@ app.use(function(req, res, next) {
 
 
 
-app.set('port', process.env.PORT || 3000);
+/*app.set('port', process.env.PORT || 3000);
 
 var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
-});
+});*/
 
 
 
-//module.exports = app;
+module.exports = app;
