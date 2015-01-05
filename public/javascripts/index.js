@@ -13,7 +13,7 @@ Array.prototype.formatter = function() {
     return string;
 };
 
-$('.spinnerModal').modal('show');
+//$('.spinnerModal').modal('show');
 
 $(document).ready(function() {
     "use strict";
@@ -67,16 +67,19 @@ $(document).ready(function() {
                 minDate = dates[0];
                 var index = 0;
                 var rowCount = 0;
+
                 peopleObj.forEach(function(element) {
-                    if (index == 0 || index % 2 == 0) {
+                    /*if (index == 0 || index % 2 == 0) {
                         $('#cloud-container').append(
                             '<div id="row' + rowCount + '" class="row"></div>'
                         );
-                    }
+                    }*/
 
 
+                    //console.log(index);
+                    console.log(rowCount);
 
-                    $('#row' + rowCount).append(
+                    $('#row' + index).append(
                         '<div class="middle"><h3>' +
                         element.name +
                         //'<div class="row">'+
@@ -91,7 +94,6 @@ $(document).ready(function() {
                         ' <button id="go' + index + '" type="submit" type="button" class="btn btn-sm btn-success" >Rearrange</button>' +
                         '</div>' +
                         '</div>' +
-                        '<hr style="clear: both">' +
                         '</form>' +
 
                         '</div>');
@@ -194,7 +196,7 @@ $(document).ready(function() {
 
 
 
-                $('.spinnerModal').modal('hide');
+                //$('.spinnerModal').modal('hide');
 
                 return string;
 
@@ -217,7 +219,7 @@ $(document).ready(function() {
     greenTea();
 
 
-    $('#keywords').click(function(e) {
+    /*$('#keywords').click(function(e) {
         e.preventDefault();
 
         console.log('click');
@@ -248,7 +250,7 @@ $(document).ready(function() {
 
         });
 
-    });
+    });*/
 
 
 

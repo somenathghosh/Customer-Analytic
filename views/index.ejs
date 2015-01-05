@@ -1,56 +1,95 @@
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <!-- <link rel="icon" href="../../favicon.ico"> -->
-    <title>WC</title>
-    <link href="stylesheets/framework.css" rel="stylesheet">
-    <link href="stylesheets/style.css" rel="stylesheet">
+    <title>Word Cloud</title>
+    <link href="./stylesheets/framework.css" rel="stylesheet">
+    <link href="./stylesheets/style.css" rel="stylesheet">
     <link rel="stylesheet" href="css/iThing.css" type="text/css" />
     <link rel="stylesheet" href="css/svg.css">
     <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
-    <style>
+
+    <style type="text/css">
+      div.inline { float:left; }
+      .clearBoth { clear:both; }
     </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="./javascripts/framework.js"></script>
+     <script src="javascripts/d3.min.js"></script>
+    <script src="javascripts/unicode.js"></script>
+    <script src="javascripts/d3.layout.cloud.js"></script>
+    
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+    <script src="javascripts/jQDateRangeSlider-min.js"></script>
+    
+    
+    <script src="javascripts/cloud.js"></script>
+    <script src="javascripts/circularHeatChart.js"></script>
+    <script src="javascripts/example.js"></script>
+
+    <script src="javascripts/index.js" ></script>
+    <script>
+      $(function(){
+        if (navigator.userAgent.match(/(iPod|iPhone|iPad|Android)/)) {
+          $('#ios-notice').removeClass('hidden');
+          $('.parallax-container').height( $(window).height() * 0.5 | 0 );
+        } else {
+          $(window).resize(function(){
+            var parallaxHeight = Math.max($(window).height() * 0.7, 200) | 0;
+            $('.parallax-container').height(parallaxHeight);
+          }).trigger('resize');
+        }
+      });
+    </script>
+    <script src="./javascripts/parallax.js"></script>
   </head>
-  <body id="cloud-container">
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Logo</a>
+  <body>
+    <section>
+      <div class="container">
+        
+        <div class="col-md-1">
+        <img src="img/Keyword-Analysis-Icon.png" alt="Smiley face" height="52" width="52"> 
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="#" class="active">Dashboard</a></li>
-<!--             <li><a href="#">Settings</a></li>
-            <li><a href="#">Profile</a></li> -->
-            <li><a href="#" id= "keywords" >Keywords</a></li>
-          </ul>
-          <!-- <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form> -->
+
+        <div class="col-md-11">
+        <h1>Simple Analytics <small>using the powerful D3.js</small></h1>
         </div>
+       
+        
+        
+        
       </div>
-    </nav>
-    
-    <div class="middle">
-      <div class="row">
-        <div id="energychart"></div>
-          <hr style="clear: both">
-      </div>
-    </div>
+    </section>
+
+    <div class="parallax-container" data-parallax="scroll" data-position="top" data-bleed="10" data-image-src="./img/city_perspective-wallpaper-1920x1080.jpg" data-natural-width="1400" data-natural-height="900"></div>
+
+    <section >
+      <div class="container" >
+        <h2 id="installation">Big Picture</h2>
+
+        <div class="middle">
+          <div class="row" >
+            <div id="energychart" style="-webkit-filter: drop-shadow(3px 3px 3px rgba(0,0,0,0.5));"></div>
+              
+          </div>
+        </div>
+
+        
 
 
-    
-    <div class="middle">
+      </div>
+    </section>
+
+    <div class="parallax-container" data-parallax="scroll" data-bleed="10" data-speed="0.2" data-image-src="./img/3019393-poster-p-1-this-revolutionary-tool-can-help-keep-employees-happy-engaged-and-on-your-side.jpg" data-natural-width="1400" data-natural-height="1400"></div>
+
+    <section>
+      <div class="container">
+        <h2 id="options">Big Cloud</h2>
+        
+        <div class="middle">
       <div class="row">
         <div id="vis"></div>
         <form id="form">
@@ -71,45 +110,198 @@
               <label for="angle-from">from</label> <input type="number" id="angle-from" value="0" min="-90" max="90"> °
               <label for="angle-to">to</label> <input type="number" id="angle-to" value="0" min="-90" max="90"> °
           </div>
-          <hr style="clear: both">
+          
         </form>
       </div>
     </div>
 
-
-  <div class="modal fade keywordModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-      <div class="modal-content">
-          
       </div>
-    </div>
-  </div>
+    </section>
 
-  <div class="modal fade spinnerModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
-    <div class="modal-dialog modal-sm" style="width:55px; hight:55px; ">
+    <div class="parallax-container" data-parallax="scroll" data-bleed="10" data-speed="0.2" data-image-src="./img/new_york_city_aerial_view-wallpaper-1920x1080.jpg" data-natural-width="1400" data-natural-height="900"></div>
+
+    <section>
+      <div class="container">
+        
+
+        
+          <div id="row0">
+            
+              
+          </div>
       
-          <div style="color:white"><i class="fa fa-spinner fa-4x fa-spin"></i></div>
-     
-    </div>
-  </div>
+
+        
+
+
+      </div>
+    </section>
+    <div class="parallax-container" data-parallax="scroll" data-bleed="10" data-speed="0.2" data-image-src="./img/berlin_buildings-wallpaper-1920x1200.jpg" data-natural-width="750" data-natural-height="763"></div>
+
+    <section>
+      <div class="container">
+        
+
+        
+          <div id="row1">
+            
+              
+          </div>
+      
+
+        
+
+
+      </div>
+    </section>
+
+    <div class="parallax-container" data-parallax="scroll" data-bleed="10" data-speed="0.2" data-image-src="./img/aerial_view_of_new_york_city_tilt_shift_photography-wallpaper-1920x1200.jpg" data-natural-width="750" data-natural-height="763"></div>
+
+
+    <section>
+      <div class="container">
+        
+
+        
+          <div id="row2">
+            
+              
+          </div>
+      
+
+        
+
+
+      </div>
+    </section>
+
+    <div class="parallax-container" data-parallax="scroll" data-bleed="10" data-speed="0.2" data-image-src="./img/bridge_lights-wallpaper-1920x1200.jpg" data-natural-width="750" data-natural-height="763"></div>
+
+
+    <section>
+      <div class="container">
+        
+
+        
+          <div id="row3">
+            
+              
+          </div>
+      
+
+        
+
+
+      </div>
+    </section>
+
+    <div class="parallax-container" data-parallax="scroll" data-bleed="10" data-speed="0.2" data-image-src="./img/new_york_7-wallpaper-1920x1080.jpg" data-natural-width="750" data-natural-height="763"></div>
+
+
+    <section>
+      <div class="container">
+        
+
+        
+          <div id="row4">
+            
+              
+          </div>
+      
+
+        
+
+
+      </div>
+    </section>
+
+    <div class="parallax-container" data-parallax="scroll" data-bleed="10" data-speed="0.2" data-image-src="./img/taipei_101_at_night-wallpaper-1920x1200.jpg" data-natural-width="750" data-natural-height="763"></div>
 
 
 
-    <script src="javascripts/d3.min.js"></script>
-    <script src="javascripts/unicode.js"></script>
-    <script src="javascripts/d3.layout.cloud.js"></script>
-    
-    
-    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
-    <script src="javascripts/framework.js"></script>
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
-    <script src="javascripts/jQDateRangeSlider-min.js"></script>
-    
-    
-    <script src="javascripts/cloud.js"></script>
-    <script src="javascripts/circularHeatChart.js"></script>
-    <script src="javascripts/example.js"></script>
+    <section>
+      <div class="container">
+        
 
-    <script src="javascripts/index.js" ></script>
+        
+          <div id="row5">
+            
+              
+          </div>
+      
+
+        
+
+
+      </div>
+    </section>
+
+    <div class="parallax-container" data-parallax="scroll" data-bleed="10" data-speed="0.2" data-image-src="./img/skyscrapers_blue_sky-wallpaper-1920x1200.jpg" data-natural-width="750" data-natural-height="763"></div>
+
+
+
+    <section>
+      <div class="container">
+        
+
+        
+          <div id="row6">
+            
+              
+          </div>
+      
+
+        
+
+
+      </div>
+    </section>
+
+    <div class="parallax-container" data-parallax="scroll" data-bleed="10" data-speed="0.2" data-image-src="./img/city_skyscrapers-wallpaper-1920x1200.jpg" data-natural-width="750" data-natural-height="763"></div>
+
+
+    <section>
+      <div class="container">
+        
+
+        
+          <div id="row7">
+            
+              
+          </div>
+      
+
+        
+
+
+      </div>
+    </section>
+
+    <div class="parallax-container" data-parallax="scroll" data-bleed="10"  data-image-src="./img/golden_gate-wallpaper-1920x1200.jpg" data-natural-width="750" data-natural-height="763"></div>
+
+
+    <div class="parallax-container" data-parallax="scroll" data-bleed="10"  data-image-src="./img/amazing_cityscape-wallpaper-1680x1050.jpg" data-natural-width="750" data-natural-height="763"></div>
+
+
+    <footer>
+      <div class="container">
+           Created By;  <a href="http://pixelcog.com/"><a href="https://github.com/pixelcog/parallax.js/blob/master/LICENSE">Somenath Ghosh</a><br />
+        All images taken are <a href="http://www.nasa.gov/audience/formedia/features/MP_Photo_Guidelines.html#.U454_JRdXls">from public domain</a>.<br /><br />
+        
+      
+      </div>
+    </footer>
+    <script type="text/javascript">
+      var _gaq = _gaq || [];
+      _gaq.push(['_setAccount', 'UA-20587204-1']);
+      _gaq.push(['_trackPageview']);
+      (function() {
+        var load = function(src){
+          var s = document.createElement('script'); s.type = 'text/javascript'; s.async = true; s.src = src;
+          var e = document.getElementsByTagName('script')[0]; e.parentNode.insertBefore(s, e);
+        };
+        load(('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js');
+      })();
+    </script>
   </body>
 </html>

@@ -23,6 +23,7 @@ function circularHeatChart() {
                 autoDomain = true;
             }
             var color = d3.scale.linear().domain(domain).range(range);
+
             if(autoDomain)
                 domain = null;
 
@@ -62,7 +63,7 @@ function circularHeatChart() {
                 .text(function(d) {return d;});
 
             //Segment labels
-            var segmentLabelOffset = 2;
+            var segmentLabelOffset = 12;
             var r = innerRadius + Math.ceil(data.length / numSegments) * segmentHeight + segmentLabelOffset;
             labels = svg.append("g")
                 .classed("labels", true)

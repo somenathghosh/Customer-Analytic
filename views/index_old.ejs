@@ -1,0 +1,110 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
+    <title>WC</title>
+    <link href="stylesheets/framework.css" rel="stylesheet">
+    <link href="stylesheets/style.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/iThing.css" type="text/css" />
+    <link rel="stylesheet" href="css/svg.css">
+    <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css" rel="stylesheet">
+    <style>
+    </style>
+  </head>
+  <body id="cloud-container">
+    <section>
+      <div class="container">
+        <div id="ios-notice" class="alert alert-info hidden"><p><strong>Notice:</strong> Hello mobile user. Unfortunately, this parallax effect is not reliably achieved on mobile devices, so all you will see on this demo page are static backgrounds.  Please visit this page on a desktop browser to see its full effect.</p></div>
+        <h1>Simple Parallax Scrolling <small>parallax.js</small></h1>
+        <p>Parallax.js is a dirt simple parallax scrolling effect inspired by <a href="http://spotify.com">Spotify.com</a> and implemented as a jQuery plugin.</p>
+        <a href="https://github.com/pixelcog/parallax.js/archive/v1.2.zip" class="btn btn-default download-link">Download Parallax.js v1.2</a>
+        <a href="https://github.com/pixelcog/parallax.js/" class="btn btn-default">View on GitHub</a>
+      </div>
+    </section>
+
+    <div class="parallax-container" data-parallax="scroll" data-position="top" data-bleed="10" data-image-src="./images/skyscrapers_blue_sky-wallpaper-1920x1200.jpg"  style="width: 100% ;height: 570px;"></div>
+
+
+    <section>
+    
+      <div class="middle">
+        <div class="row">
+          <div id="energychart"></div>
+            <hr style="clear: both">
+        </div>
+      </div>
+    </section>
+
+     
+     <div class="parallax-container" data-parallax="scroll" data-bleed="10" data-speed="0.2" data-image-src="./images/berlin_buildings-wallpaper-1920x1200.jpg" style="width: 100% ;height: 570px;"></div>
+
+
+    <section>
+    <div class="middle">
+      <div class="row">
+        <div id="vis"></div>
+        <form id="form">
+          <!-- <p style="position: absolute; right: 0; top: 0" id="status"></p> -->
+          <div style="text-align: center">
+            <div id="presets"></div>
+            <div id="custom-area">
+              <!-- <p><label for="text">Enter a URL below, or paste some text.</label> -->
+              <p><textarea id="text" class="hidden"></textarea>
+                <div id="dateSlider"></div>
+                <div><br/></div>
+                <button id="go" type="submit" type="button" class="btn btn-sm btn-success" >Rearrange</button>
+            </div>
+          </div>
+        
+          <div id="angles" class="hidden">
+            <p><input type="number" id="angle-count" value="5" min="1"> <label for="angle-count">orientations</label>
+              <label for="angle-from">from</label> <input type="number" id="angle-from" value="0" min="-90" max="90"> °
+              <label for="angle-to">to</label> <input type="number" id="angle-to" value="0" min="-90" max="90"> °
+          </div>
+          <hr style="clear: both">
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <div class="modal fade keywordModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+          
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade spinnerModal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true" >
+    <div class="modal-dialog modal-sm" style="width:55px; hight:55px; ">
+      
+          <div style="color:white"><i class="fa fa-spinner fa-4x fa-spin"></i></div>
+     
+    </div>
+  </div>
+
+
+
+    <script src="javascripts/d3.min.js"></script>
+    <script src="javascripts/unicode.js"></script>
+    <script src="javascripts/d3.layout.cloud.js"></script>
+    
+    
+    <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+    <script src="javascripts/framework.js"></script>
+    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.min.js"></script>
+    <script src="javascripts/jQDateRangeSlider-min.js"></script>
+    
+    
+    <script src="javascripts/cloud.js"></script>
+    <script src="javascripts/circularHeatChart.js"></script>
+    <script src="javascripts/example.js"></script>
+
+    <script src="javascripts/index.js" ></script>
+    <script src="javascripts/parallax.js"></script>
+  </body>
+</html>
