@@ -51,32 +51,15 @@ var Schema = new mongoose.Schema({
 var KW = mongoose.model('KeyWords',Schema);
 
 
-var Schema = new mongoose.Schema({
+var Schema1 = new mongoose.Schema({
     
-    _id : { type: String , required: true },
-    res: [{
+    res: String
 
-        date: { type: Date },
-        score: { type: String }
-
-
-    }]
-
-    
-
-    
+       
 },{ collection : 'ResultSets' });
 
 
-
-
-var RS = mongoose.model('ResultSets',Schema);
-
-
-
-
-    
-
+var RS = mongoose.model('ResultSets',Schema1);
 
 
 var box = new DB({
@@ -113,22 +96,56 @@ KW.find({},function(err,docs){
             conn.query(querySearch, function function_name (err, res) {
                 //console.log(res);
                 r.addKeywords(docs[0].keywords).run(res, function function_name (argument) {
-                    console.log(argument);
+                    
                     SCORE = argument;
+
+                    RS.findOne({}, function(err, doc){
+
+                        if(err) console.log(err);
+
+                        if(!doc) {
+                            /*console.log('no doc');
+                            new RS({
+
+                                res : JSON.stringify(SCORE)   
+
+                            }).save(function(err, doc){
+
+                                if(err) console.log('save error' + err);
+
+                                if(doc) console.log('successful in creating doc');
+
+                                if(!doc) console.log('something went wrong in saving');
+
+                            });*/
+
+                        }
+
+                        if(doc){
+                            console.log(doc._id);
+                            RS.update(
+
+                                {_id: doc._id},
+                                {$set : {res : JSON.stringify(SCORE)}},
+                                function(err, result){
+
+                                    if(err) console.log(err);
+                                    if(result) console.log('successful in updating');
+
+                            });
+
+                        }
+                    });
+
                 });
+                    
             });
+        });
           
       
-        }, function function_name () {
-            console.log('successful');
-        });
-        //console.log(docs);
-        
     }
-            
-            
-        
 });
+
 
 // error handlers
 
@@ -201,12 +218,12 @@ app.use(function(req, res, next) {
 
 
 
-/*app.set('port', process.env.PORT || 3000);
+app.set('port', process.env.PORT || 3000);
 
 var server = app.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + server.address().port);
-});*/
+});
 
 
 
-module.exports = app;
+/*module.exports = app;*/
