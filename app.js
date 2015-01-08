@@ -255,8 +255,9 @@ app.use(function(err, req, res, next) {
 
 app.get('/', function (req, res) {
     console.log("index");
-    res.render('index');
+    res.render('login');
 });
+
 
 app.get('/keywords', function(req, res){
     res.send(r.getKeyWords());
@@ -288,6 +289,13 @@ app.get('/persons', function(req, res){
 
 
 });
+
+app.get('/validated', function(req, res){
+
+    //console.log(req.body.user);
+    res.render('index');
+
+})
 
 app.use('/users', users);
 

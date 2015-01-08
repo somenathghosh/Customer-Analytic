@@ -1,0 +1,78 @@
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- <link rel="icon" href="../../favicon.ico"> -->
+    <title>Login</title>
+    
+    <link rel="stylesheet" href="css/login.css">
+    <link href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.2.0/animate.min.css" rel="stylesheet">
+    <style>
+    </style>
+  </head>
+<body class="login">
+
+	
+	<div id="form" class='form animated flipInX'>
+	  <h2>Login To Meeting Analytics</h2>
+	  <form action="/validated" method="post">
+	    <input id="userName" placeholder='Username' name="user" type='text'>
+	    <input id="password" placeholder='Password' name="pass" type='password'>
+	    <button id="submit" class='animated infinite pulse' type="submit">Login</button>
+	  </form>
+	</div>
+	
+
+	<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+	<script >
+		$(document).ready(function() {
+
+			sessionStorage.removeItem("valid");
+
+			$('#submit').click(function(e){
+
+				e.preventDefault();
+
+				var u = $('#userName').val();
+				var p = $('#password').val();
+
+				if(u === 'tcs' && p === '3cnHv8J!'){
+
+					
+					$('#form').addClass('animated zoomOut');
+					setTimeout(function(){
+						sessionStorage.setItem("valid", "true");
+						
+						window.location.href = '/validated';
+
+					},1000);
+					
+
+				}
+				else{
+
+					$('#form').removeClass('animated flipInX');
+					
+
+					$('#form').toggleClass('animated shake');
+					setTimeout(function(){
+
+						$('#form').removeClass('animated shake');
+
+					},1000);
+				}
+			});
+
+
+		});
+
+
+
+
+	</script>
+</body>
+
+</html>

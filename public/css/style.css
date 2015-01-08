@@ -36,3 +36,13 @@ footer {
 footer p {
 	font-size: 11px;
 }
+
+.ui-rangeSlider-container, .ui-rangeSlider-arrow{
+
+	height: 20px !important;
+}
+
+.ui-rangeSlider-bar{
+
+	height: 19px !important;
+}
