@@ -18,7 +18,7 @@ Array.prototype.formatter = function() {
 $(document).ready(function() {
     "use strict";
     
-    console.log(sessionStorage.getItem("valid"));
+    //console.log(sessionStorage.getItem("valid"));
 
     if(sessionStorage.getItem("valid")){
 
@@ -56,7 +56,7 @@ $(document).ready(function() {
                     var array = JSON.parse(data.score);
                     hm.withData(array);
                     hm.generateData(hm.data)
-                    console.log(hm.data);
+                    //console.log(hm.data);
                     hm.draw(hm.data);
                     //console.log(array);
                     var text = [];
@@ -94,7 +94,7 @@ $(document).ready(function() {
 
 
                         //console.log(index);
-                        console.log(rowCount);
+                        //console.log(rowCount);
 
                         $('#row' + index).append(
                             '<div class="middle"><h3 class="site__title">' +

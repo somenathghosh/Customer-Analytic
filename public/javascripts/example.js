@@ -63,7 +63,7 @@ window.HM = function  (argument) {
           
             // calculation
         });
-        console.log(data);
+        //console.log(data);
     };
 
 
@@ -78,7 +78,7 @@ window.HM = function  (argument) {
             url: '/persons',           
             success: function(dataPersons) {
                 
-                console.log(dataPersons);
+                //console.log(dataPersons);
                 var radials = [];
                 dataPersons.forEach(function(ele){
 
