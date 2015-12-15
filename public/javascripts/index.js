@@ -98,7 +98,7 @@ $(document).ready(function() {
 
                         $('#row' + index).append(
                             '<div class="middle"><h3 class="site__title">' +
-                            element.name +
+                             
                             //'<div class="row">'+
                             ' </h3><div id="vis' + index + '"></div>' +
                             '<form id="form' + index + '">' +
